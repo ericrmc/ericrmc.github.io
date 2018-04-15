@@ -1,0 +1,32 @@
+
+.. docs post example, created by `ericrmc` on Apr 15, 2018.
+
+.. post:: Apr 15, 2018
+   :tags: shell, python
+   :author: ericrmc
+
+Setting up Sphinx with ABlog
+==========
+
+Having a folder to keep track of code snippets really helped when I was
+learning Python, but now that I'm doing extra development for coursework as
+well as projects it's hard to keep it all in one place. A website was clearly
+the way to go, and it needed to have timestamped posts with editable tags,
+search functionality and the potential for easy expansion.
+
+After some searching and prototyping with GitHub pages I've settled on
+`ABlog <http://ablog.readthedocs.io/manual/ablog-quick-start/>`,
+an easy-to-use front-end for Sphinx that takes all the publishing and markup
+functionality and adds in blog-style features including easy deployment to GitHub.
+
+Getting it set up was easy by following the quick start guide followed by
+`This page <http://ablog.readthedocs.io/manual/deploy-to-github-pages/>`_, which
+required adding an environment variable for my GitHub token so it would
+stop asking for my password. In the .bashrc file under /home/user, add this line:
+``export GITHUB_TOKEN="<token>"``
+
+Then to deploy the site to GitHub, we run this from the project directory:
+
+``ablog build
+ablog serve  # Not always necessary
+ablog deploy --github-token GITHUB_TOKEN``
