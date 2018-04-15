@@ -4,5 +4,12 @@
 About ericrmc
 ============================
 
-The world wants to know more about you.
+I've created this site as a simple way to save and retrieve code snippets for
+my personal use, as well as showcase some things I've worked on in a shareable
+way.
 
+I'm based in Australia and use Python for spatial data processing and mapping.
+I have invested in learning about data science so have starting using additional
+modules for data mining and integration. I have also started using R for
+analysing and visualising my work. I find that setting all the environments up
+can be a task in itself so some material will just be notes on those processes.

@@ -1,8 +1,8 @@
 
-.. docs post example, created by `ablog start` on Apr 15, 2018.
+.. docs post example, created by `ablog start` on Apr 14, 2018.
 
-.. post:: Apr 15, 2018
-   :tags: atag
+.. post:: Apr 14, 2018
+   :tags: meta
    :author: ericrmc
 
 First Post

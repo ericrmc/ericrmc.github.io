@@ -24,7 +24,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   
-  <link rel="alternate" type="application/atom+xml"  href="../blog/atom.xml" title="docs Blog">
+  <link rel="alternate" type="application/atom+xml"  href="../blog/atom.xml" title="ericrmc">
   
   
   <link href="True" rel="stylesheet">
@@ -54,18 +54,34 @@ well as projects it’s hard to keep it all in one place. A website was clearly
 the way to go, and it needed to have timestamped posts with editable tags,
 search functionality and the potential for easy expansion.</p>
 <p>After some searching and prototyping with GitHub pages I’ve settled on
-<cite>ABlog &lt;http://ablog.readthedocs.io/manual/ablog-quick-start/&gt;</cite>,
+<a class="reference external" href="http://ablog.readthedocs.io/manual/ablog-quick-start/">ABlog</a>,
 an easy-to-use front-end for Sphinx that takes all the publishing and markup
 functionality and adds in blog-style features including easy deployment to GitHub.</p>
 <p>Getting it set up was easy by following the quick start guide followed by
-<a class="reference external" href="http://ablog.readthedocs.io/manual/deploy-to-github-pages/">This page</a>, which
+<a class="reference external" href="http://ablog.readthedocs.io/manual/deploy-to-github-pages/">this page</a>, which
 required adding an environment variable for my GitHub token so it would
 stop asking for my password. In the .bashrc file under /home/user, add this line:
 <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">GITHUB_TOKEN=&quot;&lt;token&gt;&quot;</span></code></p>
 <p>Then to deploy the site to GitHub, we run this from the project directory:</p>
-<p><code class="docutils literal notranslate"><span class="pre">ablog</span> <span class="pre">build</span>
-<span class="pre">ablog</span> <span class="pre">serve</span>&#160; <span class="pre">#</span> <span class="pre">Not</span> <span class="pre">always</span> <span class="pre">necessary</span>
-<span class="pre">ablog</span> <span class="pre">deploy</span> <span class="pre">--github-token</span> <span class="pre">GITHUB_TOKEN</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ablog build
+ablog serve  <span class="c1"># Not always necessary</span>
+ablog deploy --github-token GITHUB_TOKEN
+</pre></div>
+</div>
+<p>As an addition, here’s some examples of syntax highlighting:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">some_function</span><span class="p">():</span>
+    <span class="n">interesting</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="nb">print</span> <span class="s1">&#39;This line is highlighted.&#39;</span>
+    <span class="nb">print</span> <span class="s1">&#39;This one is not...&#39;</span>
+    <span class="nb">print</span> <span class="s1">&#39;...but this one is.&#39;</span>
+</pre></div>
+</div>
+<p>And for R:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>readr<span class="p">)</span>
+csv <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&#39;./data.csv&#39;</span><span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>csv<span class="p">)</span>
+</pre></div>
+</div>
 </div>
 
   <div class="section">
@@ -145,6 +161,10 @@ stop asking for my password. In the .bashrc file under /home/user, add this line
       
       <a href="../blog/tag/python/">python</a>
       
+    
+      
+      <a href="../blog/tag/meta/">meta</a>
+      
     </li>
   
   
@@ -161,7 +181,7 @@ stop asking for my password. In the .bashrc file under /home/user, add this line
   <ul>
     
     
-      <li><a href="../first-post/">15 April - First Post</a></li>
+      <li><a href="../first-post/">14 April - First Post</a></li>
     
   </ul>
 
@@ -179,17 +199,17 @@ stop asking for my password. In the .bashrc file under /home/user, add this line
   <ul class="ablog-cloud">
     
       
-      <li class="ablog-cloud ablog-cloud-3">
-        <a href="../blog/tag/atag/">atag</a></li>
+      <li class="ablog-cloud ablog-cloud-5">
+        <a href="../blog/tag/meta/">meta</a></li>
       
     
       
-      <li class="ablog-cloud ablog-cloud-3">
+      <li class="ablog-cloud ablog-cloud-1">
         <a href="../blog/tag/python/">python</a></li>
       
     
       
-      <li class="ablog-cloud ablog-cloud-3">
+      <li class="ablog-cloud ablog-cloud-1">
         <a href="../blog/tag/shell/">shell</a></li>
       
     
