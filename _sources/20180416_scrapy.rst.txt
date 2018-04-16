@@ -1,0 +1,120 @@
+
+.. docs post, created by `ericrmc` on Apr 15, 2018.
+
+.. post:: Apr 16, 2018
+   :tags: shell, python
+   :author: ericrmc
+.. highlight:: python3
+
+Introduction to the scrapy module
+=================================
+
+Scrapy provides an interface for connecting to web pages and capturing
+information using intuitive CSS interpreters. I did a quick tutorial (linked below)
+and managed to capture some data using CSS tags, and have noted down some
+ways of extending the functionality with CSVs and image downloads, without being
+a hindrance or performance drain on web servers.
+
+To get started::
+
+	pip install scrapy
+
+The application has an interface within the shell to launch a spider, or to
+test code. ::
+
+	scrapy shell
+
+This will start a Python shell to interact with your scrapy spider.
+Some supported commands are::
+
+	fetch('http://url')  # Captures page as 'response'
+	view(response)  # Opens captured page in default browser
+	response.css('a::attr(href)').extract()  # View all hyperlinks
+	response.css('[id=div1] a::attr(href)').extract()  # View links in div1
+	response.css('a[href*=domain]::attr(href)').extract()  # View links containing 'domain'
+
+To make a new spider, first navigate to your project directory,
+then you can make a new scrapy project that contains its own folder structure::
+
+		scrapy startproject myproject
+
+Navigate to this folder and run::
+
+	scrapy genspider myspider http://site-to-scrape.com
+
+The two places that are important are ``settings.py`` and ``/spiders``, where you
+will find the myspider script template that has been autofilled to help get started.
+
+Open up the ``/spiders/myspider.py`` script.
+The spider's ``parse`` function controls the main behaviour. You can build up
+``start_urls`` beforehand using other data sources. However this is not recursive;
+if you wanted to go one page deeper and extract data from links scraped from the start
+URL, you can use the ``callback`` argument to do so::
+
+	def parse(self, response):
+		links = response.css('a::attr(href)').extract()
+		for url in links:
+			yield scrapy.http.Request(url, callback=self.parse_page)
+
+	def parse_page(self, response):
+		additional_links = response.css('a::attr(href)').extract()
+		scraped_info = {
+			'links' : additional_links
+			}
+		yield scraped_info
+
+``yield scraped_info`` passes a dictionary of items over to the scrapy pipeline
+for processing/download. If downloading images, ensure the variable name
+`image_urls` is used. Enable the FEED settings below to get it to automatically
+generate a CSV with all the scraped information.
+
+Once this `parse()` function is set up, you can save the
+script and initiate it with::
+
+	scrapy crawl myspider
+
+To avoid certain sections of the site,
+such as social media or internal links,
+inspect the page and note the ``div id`` in the page's CSS. Generate a list of
+``bad_links`` for this particular div, then when you need to clean your main set of links,
+just run a list comprehension like::
+
+	for url in ([u for u in links if len(u) > 4 and u not in bad_links]):
+		...
+
+Modify ``settings.py`` when defaults need to be changed. These were helpful
+for testing out how it works::
+
+	BOT_NAME = 'myscraper'
+	ROBOTSTXT_OBEY = True
+	USER_AGENT = 'MyContact (me@example.com)'
+	ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
+	IMAGES_STORE = 'images/'
+	IMAGES_MIN_HEIGHT = 80
+	IMAGES_MIN_WIDTH = 80
+	MEDIA_ALLOW_REDIRECTS = True
+	IMAGES_EXPIRES = 1  # In days, e.g. don't redownload if rerun on same day
+	DOWNLOAD_DELAY = 1.0  # 1 second delay between requests
+	AUTOTHROTTLE_ENABLED = True
+	FEED_FORMAT = "csv"  # Required for saving content to a CSV
+	FEED_URI = "myspider.csv"
+
+More settings can be found `here <http://doc.scrapy.org/en/latest/topics/autothrottle.html?_ga=2.75882069.1132390179.1523761269-171693671.1523761269#settings>`_.
+These can alternatively be placed in ``custom_settings`` dictionary within the spider.
+
+hurting web servers with the huge amount of concurrent requests possible with scrapy.
+Using the spider politely is important for maintaining a friendly web and not
+`This article at ScrapingHub <https://blog.scrapinghub.com/2016/08/25/how-to-crawl-the-web-politely-with-scrapy/>`_
+contains some great information in addition to the quick notes above.
+
+A great tutorial with lots of examples and screenshots can be found over at
+`Analytics Vidhya <https://www.analyticsvidhya.com/blog/2017/07/web-scraping-in-python-using-scrapy/>`_.
+
+In addition, ``urljoin`` is indispensible when parsing hyperlinks from sites that saved only
+relative links. This function concatenates the base URL and the page link without
+any redundancy::
+
+	from urllib import parse
+
+	url = '/relative_or_full_link'
+	url = parse.urljoin(response.url, url)

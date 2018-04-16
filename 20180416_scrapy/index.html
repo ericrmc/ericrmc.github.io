@@ -1,0 +1,327 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Introduction to the scrapy module &#8212; docs  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about/" />
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+  
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  
+  <link rel="alternate" type="application/atom+xml"  href="../blog/atom.xml" title="ericrmc">
+  
+  
+  <link href="True" rel="stylesheet">
+  
+  <style type="text/css">
+    ul.ablog-archive {list-style: none; overflow: auto; margin-left: 0px}
+    ul.ablog-archive li {float: left; margin-right: 5px; font-size: 80%}
+    ul.postlist a {font-style: italic;}
+    ul.postlist-style-disc {list-style-type: disc;}
+    ul.postlist-style-none {list-style-type: none;}
+    ul.postlist-style-circle {list-style-type: circle;}
+  </style>
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction-to-the-scrapy-module">
+<h1>Introduction to the scrapy module<a class="headerlink" href="#introduction-to-the-scrapy-module" title="Permalink to this headline">¶</a></h1>
+<p>Scrapy provides an interface for connecting to web pages and capturing
+information using intuitive CSS interpreters. I did a quick tutorial (linked below)
+and managed to capture some data using CSS tags, and have noted down some
+ways of extending the functionality with CSVs and image downloads, without being
+a hindrance or performance drain on web servers.</p>
+<p>To get started:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">scrapy</span>
+</pre></div>
+</div>
+<p>The application has an interface within the shell to launch a spider, or to
+test code.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">scrapy</span> <span class="n">shell</span>
+</pre></div>
+</div>
+<p>This will start a Python shell to interact with your scrapy spider.
+Some supported commands are:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;http://url&#39;</span><span class="p">)</span>  <span class="c1"># Captures page as &#39;response&#39;</span>
+<span class="n">view</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># Opens captured page in default browser</span>
+<span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;a::attr(href)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>  <span class="c1"># View all hyperlinks</span>
+<span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;[id=div1] a::attr(href)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>  <span class="c1"># View links in div1</span>
+<span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;a[href*=domain]::attr(href)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>  <span class="c1"># View links containing &#39;domain&#39;</span>
+</pre></div>
+</div>
+<p>To make a new spider, first navigate to your project directory,
+then you can make a new scrapy project that contains its own folder structure:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">scrapy</span> <span class="n">startproject</span> <span class="n">myproject</span>
+</pre></div>
+</div>
+<p>Navigate to this folder and run:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">scrapy</span> <span class="n">genspider</span> <span class="n">myspider</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">site</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">scrape</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>The two places that are important are <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> and <code class="docutils literal notranslate"><span class="pre">/spiders</span></code>, where you
+will find the myspider script template that has been autofilled to help get started.</p>
+<p>Open up the <code class="docutils literal notranslate"><span class="pre">/spiders/myspider.py</span></code> script.
+The spider’s <code class="docutils literal notranslate"><span class="pre">parse</span></code> function controls the main behaviour. You can build up
+<code class="docutils literal notranslate"><span class="pre">start_urls</span></code> beforehand using other data sources. However this is not recursive;
+if you wanted to go one page deeper and extract data from links scraped from the start
+URL, you can use the <code class="docutils literal notranslate"><span class="pre">callback</span></code> argument to do so:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;a::attr(href)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_page</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">parse_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">additional_links</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;a::attr(href)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+        <span class="n">scraped_info</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;links&#39;</span> <span class="p">:</span> <span class="n">additional_links</span>
+                <span class="p">}</span>
+        <span class="k">yield</span> <span class="n">scraped_info</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">yield</span> <span class="pre">scraped_info</span></code> passes a dictionary of items over to the scrapy pipeline
+for processing/download. If downloading images, ensure the variable name
+<cite>image_urls</cite> is used. Enable the FEED settings below to get it to automatically
+generate a CSV with all the scraped information.</p>
+<p>Once this <cite>parse()</cite> function is set up, you can save the
+script and initiate it with:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">scrapy</span> <span class="n">crawl</span> <span class="n">myspider</span>
+</pre></div>
+</div>
+<p>To avoid certain sections of the site,
+such as social media or internal links,
+inspect the page and note the <code class="docutils literal notranslate"><span class="pre">div</span> <span class="pre">id</span></code> in the page’s CSS. Generate a list of
+<code class="docutils literal notranslate"><span class="pre">bad_links</span></code> for this particular div, then when you need to clean your main set of links,
+just run a list comprehension like:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="p">([</span><span class="n">u</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">links</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bad_links</span><span class="p">]):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>Modify <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> when defaults need to be changed. These were helpful
+for testing out how it works:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">BOT_NAME</span> <span class="o">=</span> <span class="s1">&#39;myscraper&#39;</span>
+<span class="n">ROBOTSTXT_OBEY</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">USER_AGENT</span> <span class="o">=</span> <span class="s1">&#39;MyContact (me@example.com)&#39;</span>
+<span class="n">ITEM_PIPELINES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;scrapy.pipelines.images.ImagesPipeline&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">IMAGES_STORE</span> <span class="o">=</span> <span class="s1">&#39;images/&#39;</span>
+<span class="n">IMAGES_MIN_HEIGHT</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">IMAGES_MIN_WIDTH</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">MEDIA_ALLOW_REDIRECTS</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">IMAGES_EXPIRES</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># In days, e.g. don&#39;t redownload if rerun on same day</span>
+<span class="n">DOWNLOAD_DELAY</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># 1 second delay between requests</span>
+<span class="n">AUTOTHROTTLE_ENABLED</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">FEED_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;csv&quot;</span>  <span class="c1"># Required for saving content to a CSV</span>
+<span class="n">FEED_URI</span> <span class="o">=</span> <span class="s2">&quot;myspider.csv&quot;</span>
+</pre></div>
+</div>
+<p>More settings can be found <a class="reference external" href="http://doc.scrapy.org/en/latest/topics/autothrottle.html?_ga=2.75882069.1132390179.1523761269-171693671.1523761269#settings">here</a>.
+These can alternatively be placed in <code class="docutils literal notranslate"><span class="pre">custom_settings</span></code> dictionary within the spider.</p>
+<p>hurting web servers with the huge amount of concurrent requests possible with scrapy.
+Using the spider politely is important for maintaining a friendly web and not
+<a class="reference external" href="https://blog.scrapinghub.com/2016/08/25/how-to-crawl-the-web-politely-with-scrapy/">This article at ScrapingHub</a>
+contains some great information in addition to the quick notes above.</p>
+<p>A great tutorial with lots of examples and screenshots can be found over at
+<a class="reference external" href="https://www.analyticsvidhya.com/blog/2017/07/web-scraping-in-python-using-scrapy/">Analytics Vidhya</a>.</p>
+<p>In addition, <code class="docutils literal notranslate"><span class="pre">urljoin</span></code> is indispensible when parsing hyperlinks from sites that saved only
+relative links. This function concatenates the base URL and the page link without
+any redundancy:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">urllib</span> <span class="k">import</span> <span class="n">parse</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;/relative_or_full_link&#39;</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+  <div class="section">
+  
+    
+
+
+<div class="section">
+  <span style="float: left;">
+  
+  
+  <a href="../20180415_ablog/">
+    <i class="fa fa-arrow-circle-left"></i>
+    Setting up Sphinx with ABlog
+  </a>
+  
+  </span>
+  <span>&nbsp;</span>
+  <span style="float: right;">
+  
+</div>
+
+  
+  
+  </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../">docs</a></h1>
+
+
+
+
+
+
+
+
+
+  
+  
+  <h2>
+  
+  <i class="fa fa-calendar"></i>
+    16 April 2018
+  
+  </h2>
+
+  <ul>
+    
+
+  
+  <li id="author"><span><i class="fa-fw fa fa-user"></i>
+    
+      
+      <a href="../blog/author/ericrmc/">ericrmc</a>
+      
+    </li>
+  
+
+  
+
+  
+
+  
+
+  
+  <li id="tags"><span><i class="fa-fw fa fa-tags"></i>
+      
+    
+      
+      <a href="../blog/tag/shell/">shell</a>
+      
+    
+      
+      <a href="../blog/tag/python/">python</a>
+      
+    </li>
+  
+  
+  </ul>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/">About this site</a></li>
+</ul>
+
+
+  <h3><a href="../blog/">Recent Posts</a></h3>
+  <ul>
+    
+    
+      <li><a href="../20180415_ablog/">15 April - Setting up Sphinx with ABlog</a></li>
+    
+      <li><a href="../20180415_first-post/">14 April - ABlog Default First Post</a></li>
+    
+  </ul>
+
+  <h3><a href="../blog/tag/">Tags</a></h3>
+  <style type="text/css">
+    ul.ablog-cloud {list-style: none; overflow: auto;}
+    ul.ablog-cloud li {float: left; height: 20pt; line-height: 18pt; margin-right: 5px;}
+    ul.ablog-cloud a {text-decoration: none; vertical-align: middle;}
+    li.ablog-cloud-1{font-size: 80%;}
+    li.ablog-cloud-2{font-size: 95%;}
+    li.ablog-cloud-3{font-size: 110%;}
+    li.ablog-cloud-4{font-size: 125%;}
+    li.ablog-cloud-5{font-size: 140%;}
+  </style>
+  <ul class="ablog-cloud">
+    
+      
+      <li class="ablog-cloud ablog-cloud-3">
+        <a href="../blog/tag/meta/">meta</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-3">
+        <a href="../blog/tag/python/">python</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-3">
+        <a href="../blog/tag/shell/">shell</a></li>
+      
+    
+  </ul>
+
+  <h3><a href="../blog/archive/">Archives</a></h3>
+  <ul>
+  
+    
+    <li><a href="../blog/2018/">2018 (3)</a></li>
+    
+  
+  </ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, ericrmc.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/20180416_scrapy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

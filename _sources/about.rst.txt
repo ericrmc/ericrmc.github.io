@@ -1,7 +1,7 @@
 
 .. _about:
 
-About ericrmc
+About this site
 ============================
 
 I've created this site as a simple way to save and retrieve code snippets for

@@ -6,8 +6,8 @@
 ericrmc's docs
 ================================
 
-This page contains some of my development works. Feel free to browse or view the
- :ref:`about` page for more information.
+This page contains some of my development works. Feel free to browse or
+view the :ref:`about` page for more information.
 
 
 Recent posts:
