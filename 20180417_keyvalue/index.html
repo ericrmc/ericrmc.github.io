@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Setting up Sphinx with ABlog &#8212;   documentation</title>
+    <title>Key-value over databases &#8212;   documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -46,46 +46,32 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="setting-up-sphinx-with-ablog">
-<h1>Setting up Sphinx with ABlog<a class="headerlink" href="#setting-up-sphinx-with-ablog" title="Permalink to this headline">¶</a></h1>
-<p>Having a folder to keep track of code snippets really helped when I was
-learning Python, but now that I’m doing extra development for coursework as
-well as projects it’s hard to keep it all in one place. A website was clearly
-the way to go, and it needed to have timestamped posts with editable tags,
-search functionality and the potential for easy expansion.</p>
-<p>After some searching and prototyping with GitHub pages I’ve settled on
-<a class="reference external" href="http://ablog.readthedocs.io/manual/ablog-quick-start/">ABlog</a>,
-an easy-to-use front-end for Sphinx that takes all the publishing and markup
-functionality and adds in blog-style features including easy deployment to GitHub.</p>
-<p>Getting it set up was easy by following the quick start guide followed by
-<a class="reference external" href="http://ablog.readthedocs.io/manual/deploy-to-github-pages/">this page</a>, which
-required adding an environment variable for my GitHub token so it would
-stop asking for my password. In the .bashrc file under /home/user, add this line:
-<code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">GITHUB_TOKEN=&quot;&lt;token&gt;&quot;</span></code></p>
-<p>Then to deploy the site to GitHub, we run this from the project directory:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ablog build
-ablog serve  <span class="c1"># Not always necessary</span>
-ablog deploy --github-token GITHUB_TOKEN
-</pre></div>
-</div>
-<p>As an addition, here are some examples of syntax highlighting (except for the line emphasis):</p>
-<div class="highlight-python3 notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">some_function</span><span class="p">():</span>
-    <span class="n">interesting</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="nb">print</span> <span class="s1">&#39;This line is highlighted.&#39;</span>
-    <span class="nb">print</span> <span class="s1">&#39;This one is not...&#39;</span>
-    <span class="nb">print</span> <span class="s1">&#39;...but this one is.&#39;</span>
-</pre></div>
-</td></tr></table></div>
-<p>And for R:</p>
-<div class="highlight-r notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>readr<span class="p">)</span>
-csv <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&#39;./data.csv&#39;</span><span class="p">)</span>
-<span class="kp">summary</span><span class="p">(</span>csv<span class="p">)</span>
+  <div class="section" id="key-value-over-databases">
+<h1>Key-value over databases<a class="headerlink" href="#key-value-over-databases" title="Permalink to this headline">¶</a></h1>
+<p>I encountered poor database performance when performing a join on two tables with 90,000 records each. Even though it was on a newly-made primary key, I had to cancel it after a few minutes once I realised it was going to take many hours, because it would have inhibited other progress on the project.</p>
+<p>All that needed to happen was append a single column from the second/lookup table to the first/main table, based on a key made from three fields. The lookup table was an aggregation or summarisation of a particular value that I wanted the minimum value of grouped by key.</p>
+<p>Another solution was to use the data access module in <code class="docutils literal notranslate"><span class="pre">arcpy</span></code> to build a dictionary of of all the keys and minimum values, then just iterate through the main table and look up the values I needed:</p>
+<div class="highlight-python3 notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">ind</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="k">with</span> <span class="n">arcpy</span><span class="o">.</span><span class="n">da</span><span class="o">.</span><span class="n">SearchCursor</span><span class="p">(</span><span class="n">lookup_table</span><span class="p">,[</span><span class="s1">&#39;Key&#39;</span><span class="p">,</span><span class="s1">&#39;Min_Value&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">sRows</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">sRow</span> <span class="ow">in</span> <span class="n">sRows</span><span class="p">:</span>
+              <span class="k">if</span> <span class="n">sRow</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">:</span>
+                      <span class="n">ind</span><span class="p">[</span><span class="n">sRow</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">sRow</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+              <span class="k">elif</span> <span class="n">ind</span><span class="p">[</span><span class="n">sRow</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="n">sRow</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                      <span class="n">ind</span><span class="p">[</span><span class="n">sRow</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">sRow</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">with</span> <span class="n">arcpy</span><span class="o">.</span><span class="n">da</span><span class="o">.</span><span class="n">UpdateCursor</span><span class="p">(</span><span class="n">main_table</span><span class="p">,[</span><span class="s1">&#39;Key&#39;</span><span class="p">,</span><span class="s1">&#39;Min_Value&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">uRows</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">uRow</span> <span class="ow">in</span> <span class="n">uRows</span><span class="p">:</span>
+              <span class="n">uRows</span><span class="o">.</span><span class="n">updateRow</span><span class="p">([</span><span class="n">uRow</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ind</span><span class="p">[</span><span class="n">uRow</span><span class="p">[</span><span class="mi">0</span><span class="p">]]])</span>
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -99,21 +85,14 @@ csv <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s"
   <span style="float: left;">
   
   
-  <a href="../20180415_first-post/">
+  <a href="../20180416_scrapy/">
     <i class="fa fa-arrow-circle-left"></i>
-    ABlog Default First Post
+    Introduction to the scrapy module
   </a>
   
   </span>
   <span>&nbsp;</span>
   <span style="float: right;">
-  
-  
-  <a href="../20180416_scrapy/">
-    Introduction to the scrapy module
-    <i class="fa fa-arrow-circle-right"></i>
-  </a>
-  </span>
   
 </div>
 
@@ -141,7 +120,7 @@ csv <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s"
   <h2>
   
   <i class="fa fa-calendar"></i>
-    15 April 2018
+    17 April 2018
   
   </h2>
 
@@ -168,15 +147,11 @@ csv <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s"
       
     
       
-      <a href="../blog/tag/shell/">shell</a>
+      <a href="../blog/tag/arcgis/">ArcGIS</a>
       
     
       
       <a href="../blog/tag/python/">python</a>
-      
-    
-      
-      <a href="../blog/tag/meta/">meta</a>
       
     </li>
   
@@ -194,9 +169,9 @@ csv <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s"
   <ul>
     
     
-      <li><a href="../20180417_keyvalue/">17 April - Key-value over databases</a></li>
-    
       <li><a href="../20180416_scrapy/">16 April - Introduction to the scrapy module</a></li>
+    
+      <li><a href="../20180415_ablog/">15 April - Setting up Sphinx with ABlog</a></li>
     
       <li><a href="../20180415_first-post/">14 April - ABlog Default First Post</a></li>
     
@@ -270,7 +245,7 @@ csv <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s"
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/20180415_ablog.rst.txt"
+      <a href="../_sources/20180417_keyvalue.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

@@ -1,0 +1,31 @@
+
+.. docs post, created by `ericrmc` on Apr 17, 2018.
+
+.. post:: Apr 17, 2018
+   :tags: ArcGIS, python
+   :author: ericrmc
+.. highlight:: python3
+
+Key-value over databases
+========================
+
+I encountered poor database performance when performing a join on two tables with 90,000 records each. Even though it was on a newly-made primary key, I had to cancel it after a few minutes once I realised it was going to take many hours, because it would have inhibited other progress on the project.
+
+All that needed to happen was append a single column from the second/lookup table to the first/main table, based on a key made from three fields. The lookup table was an aggregation or summarisation of a particular value that I wanted the minimum value of grouped by key.
+
+.. highlight:: python3
+   :linenothreshold: 2
+
+Another solution was to use the data access module in ``arcpy`` to build a dictionary of of all the keys and minimum values, then just iterate through the main table and look up the values I needed::
+
+  ind = {}
+    with arcpy.da.SearchCursor(lookup_table,['Key','Min_Value']) as sRows:
+  	for sRow in sRows:
+  		if sRow[0] not in ind:
+  			ind[sRow[0]] = sRow[1]
+  		elif ind[sRow[0]] > sRow[1]:
+  			ind[sRow[0]] = sRow[1]
+
+  with arcpy.da.UpdateCursor(main_table,['Key','Min_Value']) as uRows:
+  	for uRow in uRows:
+  		uRows.updateRow([uRow[0], ind[uRow[0]]])
