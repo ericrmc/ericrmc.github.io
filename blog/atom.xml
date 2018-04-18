@@ -2,10 +2,26 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">ericrmc</title>
   <id>True/blog/atom.xml</id>
-  <updated>2018-04-18T00:00:00Z</updated>
+  <updated>2018-04-19T00:00:00Z</updated>
   <link href="True" />
   <link href="True/blog/atom.xml" rel="self" />
   <generator uri="http://ablog.readthedocs.org" version="0.9.2">ABlog</generator>
+  <entry xml:base="True/blog/atom.xml">
+    <title type="text">Getting started with Hadoop and Hive</title>
+    <id>True/20180419_hadoop/</id>
+    <updated>2018-04-19T00:00:00Z</updated>
+    <published>2018-04-19T00:00:00Z</published>
+    <link href="True/20180419_hadoop/" />
+    <author>
+      <name>ericrmc</name>
+    </author>
+    <content type="html">&lt;p&gt;The processing performance of large datasets can be improved if the task is executed in parallel across several machines.
+A distributed file system is a file system where the data is stored on multiple servers,
+not the local client machine. In the Hadoop Distributed Filesystem (HDFS),
+the way the data is stored is abstracted away from the user, along with other server side technicalities,
+allowing users to just focus on the data itself.&lt;/p&gt;
+</content>
+  </entry>
   <entry xml:base="True/blog/atom.xml">
     <title type="text">Comparing lists</title>
     <id>True/20180418_comparelists/</id>

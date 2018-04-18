@@ -1,0 +1,69 @@
+
+.. docs post, created by `ericrmc` on Apr 19, 2018.
+
+.. post:: Apr 19, 2018
+   :tags: shell, hadoop, hive
+   :author: ericrmc
+.. highlight:: bash
+
+Getting started with Hadoop and Hive
+==================================================================
+
+The processing performance of large datasets can be improved if the task is executed in parallel across several machines.
+A distributed file system is a file system where the data is stored on multiple servers,
+not the local client machine. In the Hadoop Distributed Filesystem (HDFS),
+the way the data is stored is abstracted away from the user, along with other server side technicalities,
+allowing users to just focus on the data itself.
+
+Once in an SSH session, to download a CSV to our filesystem we can use the ``wget <url>`` shell command.
+All references to the data and its fields have been removed, but these steps are pretty generic.
+
+Hadoop has filesystem commands that are very similar to the shell, and are exposed by using ``hadoop fs``.
+More information can be found `here <https://hadoop.apache.org/docs/r2.7.1/hadoop-project-dist/hadoop-common/FileSystemShell.html>`_.
+For example, ``hadoop fs -ls`` is analogous to the ls command on the local filesystem.
+
+To push a local file into HDFS, we can use::
+
+  hadoop fs -put [local path] [hdfs path]
+
+Hive provides an interface for querying and managing large datasets in HDFS. Hive can be used to project structure onto large datasets already residing in distributed storage.
+
+We can initialise Hive by typing ``hive`` into the shell. Hive allows you to think of your files in HDFS as a database, and query it in a similar way you would in MySQL.
+
+In this example, we:
+
+1. Connect to a database ``<database>``
+2. Load the CSV into a temporary unstructured table ``tbl_temp``
+3. Create a structured table ``tbl_master``
+4. Use regular expressions to import the CSV data from ``tbl_temp`` to ``tbl_master``
+
+.. highlight:: sql
+
+::
+
+  use <database>
+
+  create table tmp_hr (col_value STRING)
+
+  LOAD DATA INPATH '/user/<csv>.csv' OVERWRITE INTO TABLE tbl_tmp
+
+  CREATE TABLE tbl_master (field1 FLOAT, lfield2 FLOAT, field3 STRING);
+
+  INSERT OVERWRITE TABLE tbl_master
+  SELECT
+    regexp_extract(col_value, '^(?:([^,]*),?){1}', 1) field1,
+    regexp_extract(col_value, '^(?:([^,]*),?){2}', 1) field2,
+    regexp_extract(col_value, '^(?:([^,]*),?){3}', 1) field3,
+  FROM tbl_temp;
+
+From here we can execute typical SQL queries::
+
+  SELECT COUNT(*) FROM tbl_master;
+  SELECT AVG(field2) FROM tbl_master WHERE field3 = 1;
+
+These queries get submitted as jobs, and may take a few seconds to process for small datasets,
+or even weeks for larger ones.
+Jobs are a common way of describing how processing is submitted to large distributed systems.
+A job has to be submitted, picked up by a job management process and then
+directed to the appropriate node/s for processing in parallel. The management process will
+maintain the job queue and collate the results across multiple nodes, among other things.
