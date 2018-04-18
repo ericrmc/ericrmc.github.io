@@ -15,7 +15,7 @@
     <author>
       <name>ericrmc</name>
     </author>
-    <content type="html">&lt;p&gt;Comparing the contents of two lists can be done by using sets, but in the case both lists are ordered and are the same length there is a better approach. If we want to compare the ith item of each list together, we can use the &lt;code class=&quot;docutils literal notranslate&quot;&gt;&lt;span class=&quot;pre&quot;&gt;zip()&lt;/span&gt;&lt;/code&gt; method:&lt;/p&gt;
+    <content type="html">&lt;p&gt;Comparing the contents of two lists can be done by using sets, but in the case both lists are ordered and are the same length there is a better approach.&lt;/p&gt;
 </content>
   </entry>
   <entry xml:base="True/blog/atom.xml">

@@ -10,7 +10,9 @@
 Comparing lists
 ===============
 
-Comparing the contents of two lists can be done by using sets, but in the case both lists are ordered and are the same length there is a better approach. If we want to compare the ith item of each list together, we can use the ``zip()`` method::
+Comparing the contents of two lists can be done by using sets, but in the case both lists are ordered and are the same length there is a better approach.
+
+If we want to compare the *i:sup:`th`* item of each list together, we can use the ``zip()`` method::
 
     # Two lists k and j:
     j = ['6.77','6.77','a']
