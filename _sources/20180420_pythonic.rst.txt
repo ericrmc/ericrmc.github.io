@@ -1,0 +1,141 @@
+
+.. docs post, created by `ericrmc` on Apr 20, 2018.
+
+.. post:: Apr 20, 2018
+   :tags: python
+   :author: ericrmc
+.. highlight:: python3
+   :linenothreshold: 4
+
+Pythonic programming
+====================
+
+A YouTube talk on the benefits of functional "Pythonic" programming over mere PEP8 adherance
+contained many great live examples.
+The gist was that while some code may look correct and comply with the style guide,
+it may not be the *best* way to actually go about something.
+It was presented at PyCon 2015, here's the link:
+
+`Raymond Hettinger - *Beyond PEP 8 -- Best practices for beautiful intelligible code* <https://www.youtube.com/watch?v=wf-BqAjZb8M>`_
+
+One case in point was a function that looked like it had been ported over from Java.
+Sure, it may have the correct indenting and formatting that PEP8 demands, but it wasn't
+incorporating some of the fantastic efficiencies that Python has built in, right out of the box.
+
+* Custom exceptions
+
+::
+
+    class MyClassException():
+        pass
+
+    if failure:
+      raise MyClassException('error 1')
+
+* Named tuples for better item management:
+
+::
+
+  from collections import namedtuple
+  Colour = namedtuple('Colour', ['hue','saturation','value'])
+  p = Colour(1,2,3)
+  p.saturation == 2
+
+* Use more descriptive variable and function names, and include keywords in arguments to assist readability, e.g. ``connect_to_proxy(server=127, port=8080)``
+
+* ``range()`` has been improved in Python 3, so if still on Python 2 use ``xrange()`` instead.
+
+* Instead of ``mylist[::-1]``, use ``reversed(mylist)`` or ``for item in sorted(mylist, reverse=True)``
+
+* Lists can also be sorted by an attribute, like the item length: ``sorted(mylist, key=len)``
+
+* Use enumerate(mylist) instead of indices as the index is easier to use:
+
+::
+
+    for i, item in enumerate(mylist):
+        print(i, mylist[i])
+
+* ``zip()`` doesnt scale that well, but ``izip()`` works more efficiently in Python 3.
+
+
+..
+  sentinel values is the last chunk of data we read in eg \r
+  instead of while true, block=read(32), if empty break, append
+  blocks = []
+  for block in iter(partial(f.read, 32), ''):
+    blocks.append(block)
+  first iter Arg is the loop, second is the sentinel
+  however, the loop requires an argument, which we cant fit into the iter Arg. so we use partial, which breaks it up.
+  must be careful with the line break sentinel, in case we ever actually want to send one properly.
+  functools.partial
+
+
+  we can also use for and else to save us breaking out of code blocks, like so (else means 'no break')
+  def find(seq, target):
+    for i, value in enumerate(seq):
+      if value == target:
+        break
+    else:
+      return -1
+    return i
+
+  you can make a dictionary using two lists
+  d = dict(izip(lista,listb))
+
+
+  counting repeats of items in a dic
+  d = {}
+  for value in mylist:
+    d[value] = d.get(value, 0) + 1
+  Also this, which is more modern:
+  d = defaultdict(int) #int can be called with no args,=0
+  for value in mylist:
+    d[value] += 1
+  this may need to be converted back to a dic
+  collections.counter could also do the same thing
+
+  A defaultdic can also be used to group items in a list based on a characteristic, such as string length, and enter in default values so they can be grouped:
+  d = defaultdict(list)
+  for name in names:
+    key = len(name)
+    d[key].append(name)
+
+  key, value = { }.popitem() is atomic, thread safe
+
+  py3, ChainMap(bestdicvars, seconddicvars, remainderdicvars) does a ranked map in that order
+
+  use simultaneous state updates for variables, ie have big equations with temp variables in one command (possibly split across lines)
+  x, y, dx, dy = (x + dx * t,
+                         y + dy * t,
+                         influence(m, x, y, dx, dy, 1),
+                         influence(m, x, y ,dx ,dy, 2))
+
+  use .join for concat list strings instead of += its faster
+
+  deque() is used for updating variables in sequences
+  instead of del names[0]
+  names.pop(0)
+  names.insert(0, 'str')
+  use this data structure instead:
+  names = deque(names)
+  del names[0]
+  names.popleft()
+  names.appendleft('newname')
+
+  look up context managers - to do with
+  use with instead of try
+
+  locks
+  dont use try finally lock.release etc
+  lock = threading.Lock()
+  with lock:
+    (do critical things)
+
+  removing a file if it exists is lengthy, so use ignore
+  with ignored(OSError):
+    os.remove(some file.txt)
+  might only be in Py3.4
+
+  dont need square brackets for generator expressions:
+  sum(i**2 for i in xrange(10))

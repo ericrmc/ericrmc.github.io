@@ -19,13 +19,13 @@ All that needed to happen was append a single column from the second/lookup tabl
 Another solution was to use the data access module in ``arcpy`` to build a dictionary of of all the keys and minimum values, then just iterate through the main table and look up the values I needed::
 
   ind = {}
-    with arcpy.da.SearchCursor(lookup_table,['Key','Min_Value']) as sRows:
-  	for sRow in sRows:
-  		if sRow[0] not in ind:
-  			ind[sRow[0]] = sRow[1]
-  		elif ind[sRow[0]] > sRow[1]:
-  			ind[sRow[0]] = sRow[1]
+  with arcpy.da.SearchCursor(lookup_table,['Key','Min_Value']) as sRows:
+  for sRow in sRows:
+    	if sRow[0] not in ind:
+          ind[sRow[0]] = sRow[1]
+      elif ind[sRow[0]] > sRow[1]:
+          ind[sRow[0]] = sRow[1]
 
   with arcpy.da.UpdateCursor(main_table,['Key','Min_Value']) as uRows:
-  	for uRow in uRows:
-  		uRows.updateRow([uRow[0], ind[uRow[0]]])
+      for uRow in uRows:
+          uRows.updateRow([uRow[0], ind[uRow[0]]])

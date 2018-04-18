@@ -1,0 +1,35 @@
+
+.. docs post, created by `ericrmc` on Apr 18, 2018.
+
+.. post:: Apr 18, 2018
+   :tags: ArcGIS, python
+   :author: ericrmc
+.. highlight:: python3
+   :linenothreshold: 4
+
+Comparing lists
+===============
+
+Comparing the contents of two lists can be done by using sets, but in the case both lists are ordered and are the same length there is a better approach. If we want to compare the ith item of each list together, we can use the ``zip()`` method::
+
+    # Two lists k and j:
+    j = ['6.77','6.77','a']
+    k = ['8.02','6.77','a']
+
+``zip(j,k)`` will create a list with the ordered pairs, and we can use list comprehension to find the differences::
+
+    [x for x in zip(j,k) if x[0]<>x[1]]
+
+An extension of this might be to compare the values between a master table and an update table which contains modified values in some unknown attributes. Given our two tables and a list of fields, we can show which records have different values. (There is no primary key between each table, but attributes with indices 0 and 4 can be used as a pair)::
+
+    with arcpy.da.SearchCursor(tbl_update, fields) as srows:
+        for i, srow in enumerate(srows):
+            sql_where = "Key1 = '{}' and Key2 = {}".format(srow[0], srow[4])
+            with arcpy.da.SearchCursor(tbl_master, fields, sql_where) as mrows:
+                for mrow in mrows:
+                    print('Record {}, {} changes.'
+                        .format(str(i + 1),
+                        len([x for x in zip(srow,mrow) if x[0]<>x[1]]))
+                    )
+
+Removing the ``len()`` part would show the old and new value pairs. A useful extension of this would be to report the field names, too.
