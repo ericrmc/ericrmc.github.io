@@ -31,7 +31,7 @@ I've noted down some of the examples but for further explanation please see the 
         pass
 
     if failure:
-      raise MyClassException('error 1')
+        raise MyClassException('error 1')
 
 * Named tuples for better item management:
 
