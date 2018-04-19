@@ -16,7 +16,7 @@ The gist was that while some code may look correct and comply with the style gui
 it may not be the *best* way to actually go about something.
 It was presented at PyCon 2015, here's the link:
 
-`Raymond Hettinger - *Beyond PEP 8 -- Best practices for beautiful intelligible code* <https://www.youtube.com/watch?v=wf-BqAjZb8M>`_
+`Raymond Hettinger - Beyond PEP 8 -- Best practices for beautiful intelligible code <https://www.youtube.com/watch?v=wf-BqAjZb8M>`_
 
 One case in point was a function that looked like it had been ported over from Java.
 Sure, it may have the correct indenting and formatting that PEP8 demands, but it wasn't
