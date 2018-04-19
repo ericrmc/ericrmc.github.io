@@ -2,7 +2,7 @@
 .. docs post, created by `ericrmc` on Apr 20, 2018.
 
 .. post:: Apr 20, 2018
-   :tags: python
+   :tags: Python
    :author: ericrmc
 .. highlight:: python3
    :linenothreshold: 4
@@ -21,6 +21,7 @@ It was presented at PyCon 2015, here's the link:
 One case in point was a function that looked like it had been ported over from Java.
 Sure, it may have the correct indenting and formatting that PEP8 demands, but it wasn't
 incorporating some of the fantastic efficiencies that Python has built in, right out of the box.
+I've noted down some of the examples but for further explanation please see the video.
 
 * Custom exceptions
 
@@ -58,84 +59,95 @@ incorporating some of the fantastic efficiencies that Python has built in, right
 
 * ``zip()`` doesnt scale that well, but ``izip()`` works more efficiently in Python 3.
 
+* A sentinel value is the last chunk of data we read in, and may sometimes just be ``\r``. Instead of using a ``while True`` loop, we can take advantage of new functionality. The ``iter()`` function arguments are a loop and the sentinel. In this case, the loop requires an argument itself, which we can't fit into ``iter()`` normally. So we use ``functools.partial()``, which breaks it up for us. We must still be careful with selection of the sentinel though, in case we actually wanted to send a carriage return or empty item.
 
-..
-  sentinel values is the last chunk of data we read in eg \r
-  instead of while true, block=read(32), if empty break, append
-  blocks = []
-  for block in iter(partial(f.read, 32), ''):
-    blocks.append(block)
-  first iter Arg is the loop, second is the sentinel
-  however, the loop requires an argument, which we cant fit into the iter Arg. so we use partial, which breaks it up.
-  must be careful with the line break sentinel, in case we ever actually want to send one properly.
-  functools.partial
+::
 
+    blocks = []
+    for block in iter(partial(f.read, 32), ''):
+        blocks.append(block)
 
-  we can also use for and else to save us breaking out of code blocks, like so (else means 'no break')
-  def find(seq, target):
-    for i, value in enumerate(seq):
-      if value == target:
-        break
-    else:
-      return -1
-    return i
+* We can use ``for`` and ``else`` for breaking out of code blocks. Here, ``else`` means "no break".
 
-  you can make a dictionary using two lists
-  d = dict(izip(lista,listb))
+::
 
+    def find(seq, target):
+        for i, value in enumerate(seq):
+            if value == target:
+                break
+        else:
+            return -1
+        return i
 
-  counting repeats of items in a dic
-  d = {}
-  for value in mylist:
-    d[value] = d.get(value, 0) + 1
-  Also this, which is more modern:
-  d = defaultdict(int) #int can be called with no args,=0
-  for value in mylist:
-    d[value] += 1
-  this may need to be converted back to a dic
-  collections.counter could also do the same thing
+* You can make a dictionary using two lists: ``d = dict(izip(lista,listb))``
 
-  A defaultdic can also be used to group items in a list based on a characteristic, such as string length, and enter in default values so they can be grouped:
-  d = defaultdict(list)
-  for name in names:
-    key = len(name)
-    d[key].append(name)
+* To count repeats of items in a dictionary, there is a new ``defaultdic`` method, however it may have to be converted back to a dictionary when done counting. ``collections.counter()`` is another way of doing this, too.
 
-  key, value = { }.popitem() is atomic, thread safe
+::
 
-  py3, ChainMap(bestdicvars, seconddicvars, remainderdicvars) does a ranked map in that order
+    # Older method
+    d = {}
+    for value in mylist:
+        d[value] = d.get(value, 0) + 1
 
-  use simultaneous state updates for variables, ie have big equations with temp variables in one command (possibly split across lines)
-  x, y, dx, dy = (x + dx * t,
-                         y + dy * t,
-                         influence(m, x, y, dx, dy, 1),
-                         influence(m, x, y ,dx ,dy, 2))
+    # More modern method
+    # Here, int can be called with no arguments, so it populates with 0s
+    d = defaultdict(int)
+    for value in mylist:
+        d[value] += 1
 
-  use .join for concat list strings instead of += its faster
+*   A ``defaultdic`` can also be used to group items in a list based on a characteristic, such as string length, and enter in default values so they can be grouped:
 
-  deque() is used for updating variables in sequences
-  instead of del names[0]
-  names.pop(0)
-  names.insert(0, 'str')
-  use this data structure instead:
-  names = deque(names)
-  del names[0]
-  names.popleft()
-  names.appendleft('newname')
+::
 
-  look up context managers - to do with
-  use with instead of try
+    d = defaultdict(list)
+    for name in names:
+        key = len(name)
+        d[key].append(name)
 
-  locks
-  dont use try finally lock.release etc
-  lock = threading.Lock()
-  with lock:
-    (do critical things)
+* ``key, value = { }.popitem()`` is atomic and thread safe.
 
-  removing a file if it exists is lengthy, so use ignore
-  with ignored(OSError):
-    os.remove(some file.txt)
-  might only be in Py3.4
+* ``ChainMap(bestdicvars, seconddicvars, remainderdicvars)`` does a ranked map in that order.
 
-  dont need square brackets for generator expressions:
-  sum(i**2 for i in xrange(10))
+* Use simultaneous state updates for variables, ie. have big equations with intermediate variables in one command:
+
+::
+
+    x, y, dx, dy = (x + dx * t,
+                    y + dy * t,
+                    influence(m, x, y, dx, dy, 1),
+                    influence(m, x, y ,dx ,dy, 2))
+
+* It's faster to concatenate lists of strings with ``.join()`` than ``+=``.
+
+* We actually don't need to use square brackets for generator expressions: ``sum(i**2 for i in xrange(10))``
+
+* Removing a file if it exists is lengthy, so use ignore instead:
+
+::
+
+    with ignored(OSError):
+        os.remove('file.txt')
+
+* Avoid the use of ``try``, ``finally`` and ``lock.release``. Instead, use ``with``:
+
+::
+
+    lock = threading.Lock()
+    with lock:
+        ...
+
+* ``deque()`` is a new method used for updating variables in sequences:
+
+::
+
+    # Old method
+    del names[0]
+    names.pop(0)
+    names.insert(0, 'str')
+
+    # Modern data structure
+    names = deque(names)
+    del names[0]
+    names.popleft()
+    names.appendleft('newname')

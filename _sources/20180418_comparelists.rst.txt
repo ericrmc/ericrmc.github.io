@@ -2,7 +2,7 @@
 .. docs post, created by `ericrmc` on Apr 18, 2018.
 
 .. post:: Apr 18, 2018
-   :tags: arcgis, python
+   :tags: ArcGIS, Python
    :author: ericrmc
 .. highlight:: python3
    :linenothreshold: 4

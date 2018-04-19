@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ericrmc’s docs &#8212;   documentation</title>
+    <title>ericrmc’s docs &#8212; docs  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -49,10 +49,23 @@
             
   <div class="section" id="ericrmc-s-docs">
 <h1>ericrmc’s docs<a class="headerlink" href="#ericrmc-s-docs" title="Permalink to this headline">¶</a></h1>
-<p>This page contains some of my development works. Feel free to browse or
+<p>This page contains some of my development notes and small projects. Feel free to browse or
 view the <a class="reference internal" href="about/#about"><span class="std std-ref">About this site</span></a> page for more information.</p>
 <p>Recent posts:</p>
 <ul class="postlist-style-none postlist">
+<li><p class="first">20 April - <a class="reference internal" href="20180420_pythonic/">Pythonic programming</a></p>
+<p>A YouTube talk on the benefits of functional “Pythonic” programming over mere PEP8 adherance
+contained many great live examples.
+The gist was that while some code may look correct and comply with the style guide,
+it may not be the <em>best</em> way to actually go about something.
+It was presented at PyCon 2015, here’s the link:</p>
+</li>
+<li><p class="first">19 April - <a class="reference internal" href="20180419_sampling/">Sampling strategies</a></p>
+<p>Employing different sampling methods allows us to better control weights and proportions of the data we’re using in statistical learning.
+This allows us to fine-tune our sampling so it can be the best representation possible of the larger data, which is likely still a subset of some larger population.
+In each of these examples, we will be using sampling wih replacement, as it means we retain independence and hence easier calculations later.
+Three types we will look at now are:</p>
+</li>
 <li><p class="first">19 April - <a class="reference internal" href="20180419_hadoop/">Getting started with Hadoop and Hive</a></p>
 <p>The processing performance of large datasets can be improved if the task is executed in parallel across several machines.
 A distributed file system is a file system where the data is stored on multiple servers,
@@ -65,20 +78,6 @@ allowing users to just focus on the data itself.</p>
 </li>
 <li><p class="first">17 April - <a class="reference internal" href="20180417_keyvalue/">Key-value over databases</a></p>
 <p>I encountered poor database performance when performing a join on two tables with 90,000 records each. Even though it was on a newly-made primary key, I had to cancel it after a few minutes once I realised it was going to take many hours, because it would have inhibited other progress on the project.</p>
-</li>
-<li><p class="first">16 April - <a class="reference internal" href="20180416_scrapy/">Introduction to the scrapy module</a></p>
-<p>Scrapy provides an interface for connecting to web pages and capturing
-information using intuitive CSS interpreters. I did a quick tutorial (linked below)
-and managed to capture some data using CSS tags, and have noted down some
-ways of extending the functionality with CSVs and image downloads, without being
-a hindrance or performance drain on web servers.</p>
-</li>
-<li><p class="first">15 April - <a class="reference internal" href="20180415_ablog/">Setting up Sphinx with ABlog</a></p>
-<p>Having a folder to keep track of code snippets really helped when I was
-learning Python, but now that I’m doing extra development for coursework as
-well as projects it’s hard to keep it all in one place. A website was clearly
-the way to go, and it needed to have timestamped posts with editable tags,
-search functionality and the potential for easy expansion.</p>
 </li>
 </ul>
 <div class="toctree-wrapper compound">
@@ -95,7 +94,7 @@ search functionality and the potential for easy expansion.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#"></a></h1>
+<h1 class="logo"><a href="#">docs</a></h1>
 
 
 
@@ -109,6 +108,7 @@ search functionality and the potential for easy expansion.</p>
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about/">About this site</a></li>
+<li class="toctree-l1"><a class="reference internal" href="showcase/">Showcase</a></li>
 </ul>
 
 
@@ -116,15 +116,15 @@ search functionality and the potential for easy expansion.</p>
   <ul>
     
     
+      <li><a href="20180420_pythonic/">20 April - Pythonic programming</a></li>
+    
+      <li><a href="20180419_sampling/">19 April - Sampling strategies</a></li>
+    
       <li><a href="20180419_hadoop/">19 April - Getting started with Hadoop and Hive</a></li>
     
       <li><a href="20180418_comparelists/">18 April - Comparing lists</a></li>
     
       <li><a href="20180417_keyvalue/">17 April - Key-value over databases</a></li>
-    
-      <li><a href="20180416_scrapy/">16 April - Introduction to the scrapy module</a></li>
-    
-      <li><a href="20180415_ablog/">15 April - Setting up Sphinx with ABlog</a></li>
     
   </ul>
 
@@ -142,38 +142,43 @@ search functionality and the potential for easy expansion.</p>
   <ul class="ablog-cloud">
     
       
+      <li class="ablog-cloud ablog-cloud-2">
+        <a href="blog/tag/arcgis/">ArcGIS</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-1">
+        <a href="blog/tag/hadoop/">Hadoop</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-1">
+        <a href="blog/tag/hive/">Hive</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-5">
+        <a href="blog/tag/python/">Python</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-1">
+        <a href="blog/tag/r/">R</a></li>
+      
+    
+      
       <li class="ablog-cloud ablog-cloud-1">
         <a href="blog/tag/sql/">SQL</a></li>
       
     
       
-      <li class="ablog-cloud ablog-cloud-2">
-        <a href="blog/tag/arcgis/">arcgis</a></li>
-      
-    
-      
-      <li class="ablog-cloud ablog-cloud-1">
-        <a href="blog/tag/hadoop/">hadoop</a></li>
-      
-    
-      
-      <li class="ablog-cloud ablog-cloud-1">
-        <a href="blog/tag/hive/">hive</a></li>
+      <li class="ablog-cloud ablog-cloud-3">
+        <a href="blog/tag/shell/">Shell</a></li>
       
     
       
       <li class="ablog-cloud ablog-cloud-2">
         <a href="blog/tag/meta/">meta</a></li>
-      
-    
-      
-      <li class="ablog-cloud ablog-cloud-5">
-        <a href="blog/tag/python/">python</a></li>
-      
-    
-      
-      <li class="ablog-cloud ablog-cloud-3">
-        <a href="blog/tag/shell/">shell</a></li>
       
     
   </ul>
@@ -182,7 +187,7 @@ search functionality and the potential for easy expansion.</p>
   <ul>
   
     
-    <li><a href="blog/2018/">2018 (6)</a></li>
+    <li><a href="blog/2018/">2018 (8)</a></li>
     
   
   </ul>

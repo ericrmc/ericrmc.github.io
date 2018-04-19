@@ -1,0 +1,77 @@
+
+.. docs post, created by `ericrmc` on Apr 21, 2018.
+
+.. post:: Apr 19, 2018
+   :tags: R
+   :author: ericrmc
+.. highlight:: r
+   :linenothreshold: 2
+
+Sampling strategies
+===================
+
+Employing different sampling methods allows us to better control weights and proportions of the data we're using in statistical learning.
+This allows us to fine-tune our sampling so it can be the best representation possible of the larger data, which is likely still a subset of some larger population.
+In each of these examples, we will be using sampling wih replacement, as it means we retain independence and hence easier calculations later.
+Three types we will look at now are:
+
+1. Simple Random Sampling, where each of n items has the same chance of being selected (1/n)
+2. Weighted Random Sampling, where positive weights are assigned to each of n items, and the chance of some item being selected is proportional to its weight
+3. Stratified Random Sampling, where the data is segmented into k strata, usually based on an attribute such as gender, or perhaps by range for numerical values.
+
+Simple random sampling on some data can be done using::
+
+    datasample <- data[sample(1:n, m, replace=TRUE),]
+
+The ``aggregate()`` function helps show how our data is distributed, based on some attributes
+aggregate(GPA~gender, datasample, length)
+
+Bootstrapping is basically repeated sampling where we aggregate some statistics on the repeated samples.
+These then give us an empirical understanding of the distribution of those statistics as they relate to the population of interest.
+The data being referenced is some synthetic student data with gender and mean GPA attributes::
+
+    meanGPAbygender <- data.frame(sample=integer(), MGPA=double(), FGPA=double())
+    for (i in 1:1000){
+        datasample<-data[sample(1:835,100,replace=TRUE),]
+        temp<-as.data.frame(aggregate(GPA~gender, datasample, mean))
+        temp$gender<-NULL
+        meanGPAbygender[i,]<-c(i,t(temp))
+    }
+
+    summary(meanGPAbygender)
+
+To plot histograms of our data, we can use this code::
+
+    hist(meanGPAbygender$MGPA, col=rgb(0,0,1,0.5), main="Bootstrapped Histogram for Mean GPA by Gender", xlab="Mean GPA")
+    hist(meanGPAbygender$FGPA, col=rgb(1,0,0,0.5), add=TRUE)
+    legend("topright", c("Male","Female"),fill=c(rgb(0,0,1,0.5), rgb(1,0,0,0.5)))
+
+.. image:: /images/20180421_sampling_histogram.png
+
+To see Weighted Random Sampling, we can generate some non-negative weights and use an additional argument in the ``sample()`` function::
+
+    data$weights <- runif(835)
+    data$weights <- data$weights / sum(data$weights)  # Ensures they all sum to 1
+
+    weighteddatasample <- data[sample(1:835,100, replace=TRUE, data$weights),]
+
+For Stratified Random Sampling, we generate some random data with two strata.
+The ``rnorm(n)`` function generates n random numbers in a normal distribution,
+and takes a mean and standard deviation as additional optional arguments.
+
+::
+
+    sv <- data.frame(variable=double(), strata=integer())
+    sv[1:10,1] <- rnorm(10)
+    sv[1:10,2] <- as.numeric(sv[,1]>0)
+
+Second, we split the data into two subsets, one for each stratum::
+
+    sv0 <- sv[sv$strata==0,]$variable
+    sv1 <- sv[sv$strata==1,]$variable
+
+Third, we perform Stratified Random Sampling to sample three times from each subset and then combine::
+
+    sv0sample <- sv0[sample(1:length(sv0), 3, replace=TRUE)]
+    sv1sample <- sv1[sample(1:length(sv1), 3, replace=TRUE)]
+    svsample <- rbind(sv0sample, sv1sample

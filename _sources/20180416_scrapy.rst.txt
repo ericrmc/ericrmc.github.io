@@ -2,7 +2,7 @@
 .. docs post, created by `ericrmc` on Apr 15, 2018.
 
 .. post:: Apr 16, 2018
-   :tags: shell, python
+   :tags: Shell, Python
    :author: ericrmc
 .. highlight:: python3
 

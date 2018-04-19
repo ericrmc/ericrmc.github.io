@@ -6,7 +6,7 @@
 ericrmc's docs
 ================================
 
-This page contains some of my development works. Feel free to browse or
+This page contains some of my development notes and small projects. Feel free to browse or
 view the :ref:`about` page for more information.
 
 
@@ -24,6 +24,8 @@ Recent posts:
    in the sidebar both under Navigation and Recent Posts.
 
 .. toctree::
+   :maxdepth: 2
    :hidden:
 
-   about.rst
+   about
+   showcase

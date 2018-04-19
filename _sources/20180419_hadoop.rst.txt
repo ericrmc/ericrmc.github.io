@@ -2,12 +2,12 @@
 .. docs post, created by `ericrmc` on Apr 19, 2018.
 
 .. post:: Apr 19, 2018
-   :tags: shell, hadoop, hive, SQL
+   :tags: Shell, Hadoop, Hive, SQL
    :author: ericrmc
 .. highlight:: bash
 
 Getting started with Hadoop and Hive
-==================================================================
+====================================
 
 The processing performance of large datasets can be improved if the task is executed in parallel across several machines.
 A distributed file system is a file system where the data is stored on multiple servers,
