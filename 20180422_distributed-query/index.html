@@ -51,7 +51,7 @@
 <p>For distributed databases, efficient processing and transfer of records and values is paramount.
 Semijoins allow for data to be sent back and forth in a way that sounds like more work,
 but may in fact have less data transfer than an equivalent traditional inner join.</p>
-<p>A database of athlete details have been vertically fragmented into two tables,
+<p>A database of athlete details has been vertically fragmented into two tables,
 <code class="docutils literal notranslate"><span class="pre">ATHLETE_V1</span></code> and <code class="docutils literal notranslate"><span class="pre">ATHLETE_V2</span></code> for efficient storage at two different sites,
 <code class="docutils literal notranslate"><span class="pre">USER1_VP</span></code> and <code class="docutils literal notranslate"><span class="pre">USER2_VP</span></code>. If we needed to join them together to access
 a large subset of the fields and run queries, we would typically run something like this
@@ -68,7 +68,6 @@ However, this can be broken up and done more efficiently, with far less data tra
 and much faster speed, if we use semijoins and reorder our query.
 If our goal is to have a table containing all the Australian athletes,
 we probably don’t need to access all of the records in both tables in the first place.</p>
-<p>We then use this table to query <code class="docutils literal notranslate"><span class="pre">ATHLETE_V2</span></code> again, but this time getting all the fields rather than simply IDs (step 3)</p>
 <ol class="arabic">
 <li><p class="first">Get all the Athletes whose nationality is Australia from <code class="docutils literal notranslate"><span class="pre">ATHLETE_V2</span></code>:</p>
 <div class="highlight-sql notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
