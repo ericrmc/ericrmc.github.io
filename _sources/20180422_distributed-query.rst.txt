@@ -1,0 +1,65 @@
+
+.. docs post, created by `ericrmc` on Apr 22, 2018.
+
+.. post:: Apr 22, 2018
+   :tags: SQL
+   :author: ericrmc
+.. highlight:: sql
+   :linenothreshold: 0
+
+Distributed query processing
+============================
+
+For distributed databases, efficient processing and transfer of records and values is paramount.
+Semijoins allow for data to be sent back and forth in a way that sounds like more work,
+but may in fact have less data transfer than an equivalent traditional inner join.
+
+A database of athlete details have been vertically fragmented into two tables,
+``ATHLETE_V1`` and ``ATHLETE_V2`` for efficient storage at two different sites,
+``USER1_VP`` and ``USER2_VP``. If we needed to join them together to access
+a large subset of the fields and run queries, we would typically run something like this
+(note we are using letter aliases ``b`` and ``c`` for our tables)::
+
+	select b.AthleteID, b.FName, b.SName, c.BDate, c.CCode, c.SportID
+	from "USER1_VP"."ATHLETE_V1" b, "USER2_VP"."ATHLETE_V2" c
+	where b.AthleteID=c.AthleteID;
+
+From here, we can filter to get results like ``where CCODE='AUS'`` to find Australians.
+However, this can be broken up and done more efficiently, with far less data transfer
+and much faster speed, if we use semijoins and reorder our query.
+If our goal is to have a table containing all the Australian athletes,
+we probably don't need to access all of the records in both tables in the first place.
+
+We then use this table to query ``ATHLETE_V2`` again, but this time getting all the fields rather than simply IDs (step 3)
+
+1. Get all the Athletes whose nationality is Australia from ``ATHLETE_V2``::
+
+	select AthleteID
+	from "USER2_VP"."ATHLETE_V2"
+	where CCODE='AUS';
+
+2. Use this list of Australian athlete IDs to make a query to select all the related data from ``ATHLETE_V1`` (note that we are nesting the first query)::
+
+	select *
+	from "USER1_VP"."ATHLETE_V1" a
+	where a.AthleteID in
+		(select AthleteID
+		 from "USER2_VP"."ATHLETE_V2"
+		 where CCODE='AUS');
+
+3. This intermediate table contains IDs from ``ATHLETE_V2`` and all fields from ``ATHLETE_V1``. We can use it to get the rest of the fields from ``ATHLETE_V2``::
+
+	select b.AthleteID, b.FName, b.SName, c.BDate, c.CCode, c.SportID
+	from "USER2_VP"."ATHLETE_V2" c,
+		(select *
+		 from "USER1_VP"."ATHLETE_V1" a
+		 where a.AthleteID in
+			(select AthleteID
+			 from "USER2_VP"."ATHLETE_V2"
+			 where CCODE='AUS')) b
+	where b.AthleteID=c.AthleteID;
+
+This final query with nesting provides the result we need, but due to only sending around and processing the records we needed,
+the network cost and time has been reduced significantly. As mentioned earlier this may not always be the case,
+and if possible it should be tested both ways first. It depends heavily on how the database fragmentation has has been
+designed. This approach can also be used when one site is slower but there is no replication of the fragments.
