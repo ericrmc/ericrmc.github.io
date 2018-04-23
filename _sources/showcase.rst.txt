@@ -4,22 +4,31 @@
 Showcase
 ============================
 
-
-- Perspective display of simulated flood surface.
-  *Software: ESRI ArcGIS, pre-prepared TUFLOW results, Adobe Photoshop*
-
+Perspective display of simulated flood surface.
+ *Software: ESRI ArcGIS, pre-prepared TUFLOW results, Adobe Photoshop*
 
 .. image:: images/show-3d-creek-simulation-920px.jpg
 
-- Interpolation of Bureau of Meteorology radar intensity data where the rain gauges missed a storm event because of their spatial distribution.
+------------
+
+Interpolation of Bureau of Meteorology radar intensity data where the rain gauges had missed a storm event because of their spatial distribution.
   *Software: ESRI ArcGIS, Python.*
 
 .. image:: images/show-art-bom-920px.jpg
 
-- Series of diagrams that describe the processing of rain and stream gauges in order to classify the risk of catchments upstream of settlements.
+------------
+
+The following series of diagrams describe the processing of geospatial data including rain and stream gauges, settlements, watercourses and algorithmically-generated catchments in order to estimate settlement risk based on the characteristics of the upstream catchment.
+  *Software: ESRI ArcGIS, Python.*
+
+**Rain gauge distribution and density relative to the catchment upstream of a settlement:**
 
 .. image:: images/show-fwgnr-1-raingaugebuffers.png
 
-.. image:: images/show-fwgnr-2-settlement9h.png
+**Approximating the travel time of water based on terrain roughness:**
 
-.. image:: images/show-fwgnr-3-traveltime.png
+.. image:: images/show-fwgnr-2-traveltime.png
+
+**Determining the area of the gauged catchment upstream of the settlement, considering the evacuation time needed for that settlement:**
+
+.. image:: images/show-fwgnr-3-settlement9h.png
