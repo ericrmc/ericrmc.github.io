@@ -4,4 +4,22 @@
 Showcase
 ============================
 
-Showcase material to be added shortly.
+
+- Perspective display of simulated flood surface.
+  *Software: ESRI ArcGIS, pre-prepared TUFLOW results, Adobe Photoshop*
+
+
+.. image:: images/show-3d-creek-simulation-920px.jpg
+
+- Interpolation of Bureau of Meteorology radar intensity data where the rain gauges missed a storm event because of their spatial distribution.
+  *Software: ESRI ArcGIS, Python.*
+
+.. image:: images/show-art-bom-920px.jpg
+
+- Series of diagrams that describe the processing of rain and stream gauges in order to classify the risk of catchments upstream of settlements.
+
+.. image:: images/show-fwgnr-1-raingaugebuffers.png
+
+.. image:: images/show-fwgnr-2-settlement9h.png
+
+.. image:: images/show-fwgnr-3-traveltime.png

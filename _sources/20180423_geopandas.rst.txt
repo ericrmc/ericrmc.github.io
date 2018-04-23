@@ -1,0 +1,38 @@
+
+.. post:: Apr 23, 2018
+   :tags: Python, geospatial
+   :author: ericrmc
+.. highlight:: bash
+
+GeoPandas for geospatial data in Python
+=======================================
+
+GeoPandas is a project that started in 2013 and incorporates some of the most useful geospatial data processing
+packages available in Python. It's very comprehensive but a bit on the slow side because it stores custom Python objects in arrays,
+so for operations it has to iterate through those objects. Some recent enhancements with Cython means it's closing the gap to
+bigger open-source tools like PostGIS.
+
+Some major features:
+
+- Read and write a variety of formats (fiona, GDAL/OGR)
+- Familiar manipulation of the attributes (pandas dataframe)
+- Element-wise spatial predicates (intersects, within, ...) and operations (intersection, union, difference, ...) (shapely)
+- Re-project your data (pyproj)
+- Quickly visualise the geometries (matplotlib, descartes)
+- More advanced spatial operations: spatial joins and overlays (rtree)
+
+It can be expanded with the following packages:
+
+- geoplot for visualisation and cartopy for projection-aware cartography
+- folium for Leaflet.js maps, including easy OpenStreetMap API plugins
+- OSMnx for street networks
+- PySAL for geospatial analysis
+- rasterio for working with raster data
+
+The official site is `<http://geopandas.org/index.html>`_. The Cython branch is available through GitHub:
+
+- clone https://github.com/geopandas/geopandas
+- checkout 'geopandas-cython' branch
+- ``make inplace``
+
+An alternative is GeoAlchemy 2, which extends SQLAlchemy for working with spatial databases and focuses on PostGIS.

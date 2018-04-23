@@ -2,7 +2,7 @@
 .. docs post, created by `ericrmc` on Apr 19, 2018.
 
 .. post:: Apr 19, 2018
-   :tags: Shell, Hadoop, Hive, SQL
+   :tags: Bash, Hadoop, Hive, SQL
    :author: ericrmc
 .. highlight:: bash
 

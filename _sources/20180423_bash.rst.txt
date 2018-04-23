@@ -1,0 +1,105 @@
+
+.. post::
+   :tags: Bash
+   :author: ericrmc
+.. highlight:: bash
+   :linenothreshold: 0
+
+Bash shell notes
+================
+
+* Variables can be saved by simply typing ``MYVAR=string``, and recalled with ``$MYVAR``.
+
+* Referencing variables with double quotes means the bash shell will translate the variable into its value, but not if its in single quotes.
+
+* To access a variable externally, e.g. in another shell, use the ``export`` prefix.
+
+* Cast variables as arrays by encapsulating them in curly braces ``${BASH_VERSINFO[0]}``. All simple variables are actually arrays with one element. So following from above, ``echo $MYVAR`` is equivalent to ``echo ${MYVAR[0]}``.
+
+* A basic function template
+
+::
+
+    $ function myfunc {
+        echo $1
+        echo $2
+        local MYVAR="inside function"
+        echo $MYVAR
+    }
+    $ myfunc Hello World
+    Hello
+    World
+    inside function
+
+* A function or variable can also be ``unset``.
+
+* Aliases are strings that the shell takes and translates to whatever that string is aliased to. ``alias cd=nothing`` will remap the ``cd`` function to ``nothing``, and unset with ``unalias cd``.
+
+* These are the first three numbered ‘file descriptors’
+    * 0 is ‘standard input’
+    * 1 is ‘standard output’, e.g. '>'
+    * 2 is ‘standard error’
+
+* A redirection operator is like ``2>&1``.
+  Appending it to a command tells the shell to send the output on standard error (2) to whatever endpoint standad output is pointed to at that command.
+  i.e. it points file descriptor 2 (standard error) to whatever file descriptor 1 (standard output) is pointed at.
+  e.g. ``command_does_not_exist > outfile 2>&1)`` will send an error message as the standard output to the outfile insead of the terminal, which it would do if we had the operator in the middle.
+
+* ``>`` will write content a new file, while ``>>`` will append to the file.
+
+* A basic script template
+
+::
+
+    $ echo '#!/bin/bash' > simple_script
+    $ echo 'echo I am a script' >> simple_script
+    $ chmod +x simple_script
+    $ ./simple_script
+
+* To avoid typing ./ before the script name, use ``$ PATH=${PATH}:.`` - this appends the current working directory to the path listing.
+
+* To reference variables from the current shell context, call it using ``source script_file``.
+
+* Nesting is simple - just
+  place a command wrapped inside a $() inside another command wrapped inside a $() and bash
+  substitute in the output of each command from the inside out for you in the appropriate order.
+  Backticks can also be used but due to added complexity of escape characters it is not that common. The following nested commands have the same output:
+
+::
+
+    $ echo $(echo hello1 $(echo hello2))
+    $ echo `echo hello1 \`echo hello2\``
+
+* Logic tests can be done using the builtin ``[`` command. It must be followed by a space,
+  e.g. ``[ $A == 1 ]``
+  Using ``[[`` includes some error tolerance and is best practice in style guides, i.e. nonexistent variables will be treated as ''.
+  The following lines are equivalent:
+
+::
+
+    $ [[ ${DOESNOTEXIST} = '' ]]
+    $ [ x${DOESNOTEXIST} = x ]
+
+* The ``$?`` variable is a special variable that gives you a number telling you whether the last-executed
+  command succeeded or not. If it succeeded, the number will (usually) be ‘0’. If it failed, the number
+  will (usually) not be ‘0’. To execute, use ``echo $?``
+
+* ‘!’ means ‘not’, || means ‘or’, && means ‘and’ and items within ‘()’ are
+  evaluated first. You can also use ``-o`` as the 'or' operator and ``-a`` for 'and', but not when using ``[[``
+
+* Some extra unary operators for tests are:
+
+-z string     returns true only if the argument is an empty string
+-a file       checks if a file exists
+-d dir        checks if a directory exists
+
+* Testing of integers can be done using the following, as ``<`` expects strings:
+
+-lt  less than
+-gt  greater than
+-eq  equals
+-ne  not equals
+
+* This ``if`` statement can be run on a single line if semicolons are used:
+  ``if [[ 10 -gt 2 ]]; then echo 'true'; fi``
+  Otherwise once you finish the first line, it'll keep prompting for the full code block until you complete it with ``fi``.

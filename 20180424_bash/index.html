@@ -1,0 +1,380 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Bash shell notes &#8212; docs  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about/" />
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+  
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  
+  <link rel="alternate" type="application/atom+xml"  href="../blog/atom.xml" title="ericrmc">
+  
+  
+  <link href="True" rel="stylesheet">
+  
+  <style type="text/css">
+    ul.ablog-archive {list-style: none; overflow: auto; margin-left: 0px}
+    ul.ablog-archive li {float: left; margin-right: 5px; font-size: 80%}
+    ul.postlist a {font-style: italic;}
+    ul.postlist-style-disc {list-style-type: disc;}
+    ul.postlist-style-none {list-style-type: none;}
+    ul.postlist-style-circle {list-style-type: circle;}
+  </style>
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="bash-shell-notes">
+<h1>Bash shell notes<a class="headerlink" href="#bash-shell-notes" title="Permalink to this headline">¶</a></h1>
+<p>These bullet points are just notes and examples from the book
+<a class="reference external" href="https://leanpub.com/learnbashthehardway">Learn Bash The Hard Way, by Ian Miell</a>.
+I had not tried a ‘hard way’ book before so the teaching method was a bit new to me,
+but I quickly took to the hands-on approach to learning and the exercises it encourages you to do.</p>
+<ul class="simple">
+<li>Variables can be saved by simply typing <code class="docutils literal notranslate"><span class="pre">MYVAR=string</span></code>, and recalled with <code class="docutils literal notranslate"><span class="pre">$MYVAR</span></code>.</li>
+<li>Referencing variables with double quotes means the bash shell will translate
+the variable into its value, but not if its in single quotes.</li>
+<li>To access a variable externally, e.g. in another shell, use the <code class="docutils literal notranslate"><span class="pre">export</span></code> prefix.</li>
+<li>Cast variables as arrays by encapsulating them in curly braces <code class="docutils literal notranslate"><span class="pre">${BASH_VERSINFO[0]}</span></code>.
+All simple variables are actually arrays with one element.
+So following from above, <code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">$MYVAR</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">${MYVAR[0]}</span></code>.</li>
+<li>A basic function template</li>
+</ul>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ <span class="k">function</span> myfunc <span class="o">{</span>
+    <span class="nb">echo</span> <span class="nv">$1</span>
+    <span class="nb">echo</span> <span class="nv">$2</span>
+    <span class="nb">local</span> <span class="nv">MYVAR</span><span class="o">=</span><span class="s2">&quot;inside function&quot;</span>
+    <span class="nb">echo</span> <span class="nv">$MYVAR</span>
+<span class="o">}</span>
+$ myfunc Hello World
+Hello
+World
+inside <span class="k">function</span>
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li>A function or variable can also be <code class="docutils literal notranslate"><span class="pre">unset</span></code>.</li>
+<li>Aliases are strings that the shell takes and translates to whatever that string is aliased to.
+<code class="docutils literal notranslate"><span class="pre">alias</span> <span class="pre">cd=nothing</span></code> will remap the <code class="docutils literal notranslate"><span class="pre">cd</span></code> function to <code class="docutils literal notranslate"><span class="pre">nothing</span></code>, and unset with <code class="docutils literal notranslate"><span class="pre">unalias</span> <span class="pre">cd</span></code>.</li>
+<li><dl class="first docutils">
+<dt>These are the first three numbered ‘file descriptors’</dt>
+<dd><ul class="first last">
+<li>0 is ‘standard input’</li>
+<li>1 is ‘standard output’, e.g. ‘&gt;’</li>
+<li>2 is ‘standard error’</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>A redirection operator is like <code class="docutils literal notranslate"><span class="pre">2&gt;&amp;1</span></code>.
+Appending it to a command tells the shell to send the output on standard error (2) to whatever endpoint standard output is pointed to at that command.
+i.e. it points file descriptor 2 (standard error) to whatever file descriptor 1 (standard output) is pointed at.
+e.g. <code class="docutils literal notranslate"><span class="pre">command_does_not_exist</span> <span class="pre">&gt;</span> <span class="pre">outfile</span> <span class="pre">2&gt;&amp;1)</span></code> will send an error message as the standard output to the outfile insead of the terminal, which it would do if we had the operator in the middle.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&gt;</span></code> will write content a new file, while <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> will append to the file.</li>
+<li>A basic script template:</li>
+</ul>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;#!/bin/bash&#39;</span> &gt; simple_script
+$ <span class="nb">echo</span> <span class="s1">&#39;echo I am a script&#39;</span> &gt;&gt; simple_script
+$ chmod +x simple_script
+$ ./simple_script
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li>To avoid typing <code class="docutils literal notranslate"><span class="pre">./</span></code> before the script name, use <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">PATH=${PATH}:.</span></code> - this appends the current working directory to the path listing.</li>
+<li>To reference variables from the current shell context, call it using <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">script_file</span></code>.</li>
+<li>Nesting is simple - just
+place a command wrapped inside a $() inside another command wrapped inside a $() and bash
+substitute in the output of each command from the inside out for you in the appropriate order.
+Backticks can also be used but due to added complexity of escape characters it is not that common.
+The following nested commands have the same output:</li>
+</ul>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="k">$(</span><span class="nb">echo</span> hello1 <span class="k">$(</span><span class="nb">echo</span> hello2<span class="k">))</span>
+$ <span class="nb">echo</span> <span class="sb">`</span><span class="nb">echo</span> hello1 <span class="se">\`</span><span class="nb">echo</span> hello2<span class="se">\`</span><span class="sb">`</span>
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li>Logic tests can be done using the builtin <code class="docutils literal notranslate"><span class="pre">[</span></code> command. It must be followed by a space,
+e.g. <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">$A</span> <span class="pre">==</span> <span class="pre">1</span> <span class="pre">]</span></code>
+Using <code class="docutils literal notranslate"><span class="pre">[[</span></code> includes some error tolerance and is best practice in style guides
+because nonexistent variables will be treated as an empty string <code class="docutils literal notranslate"><span class="pre">''</span></code> instead of throwing an error.
+The following lines are equivalent:</li>
+</ul>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ <span class="o">[[</span> <span class="si">${</span><span class="nv">DOESNOTEXIST</span><span class="si">}</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="o">]]</span>
+$ <span class="o">[</span> x<span class="si">${</span><span class="nv">DOESNOTEXIST</span><span class="si">}</span> <span class="o">=</span> x <span class="o">]</span>
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li>The <code class="docutils literal notranslate"><span class="pre">$?</span></code> variable is a special variable that gives you a number telling you whether the last-executed
+command succeeded or not. If it succeeded, the number will (usually) be ‘0’. If it failed, the number
+will (usually) not be ‘0’. To execute, use <code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">$?</span></code> after executing a conditional.</li>
+<li>‘!’ means ‘not’, || means ‘or’, &amp;&amp; means ‘and’ and items within ‘()’ are
+evaluated first. You can also use <code class="docutils literal notranslate"><span class="pre">-o</span></code> as the ‘or’ operator and <code class="docutils literal notranslate"><span class="pre">-a</span></code> for ‘and’, but not when using <code class="docutils literal notranslate"><span class="pre">[[</span></code></li>
+<li>Some extra unary operators for tests are:</li>
+</ul>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-z <var>string</var></span></kbd></td>
+<td>returns true only if the argument is an empty string</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-a <var>file</var></span></kbd></td>
+<td>checks if a file exists</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-d <var>dir</var></span></kbd></td>
+<td>checks if a directory exists</td></tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Testing of integers can be done using the following, as <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> expects strings:</li>
+</ul>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-l<var>t</var></span></kbd></td>
+<td>less than</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-g<var>t</var></span></kbd></td>
+<td>greater than</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-e<var>q</var></span></kbd></td>
+<td>equals</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-n<var>e</var></span></kbd></td>
+<td>not equals</td></tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>This <code class="docutils literal notranslate"><span class="pre">if</span></code> statement can be run on a single line if semicolons are used:
+<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">[[</span> <span class="pre">10</span> <span class="pre">-gt</span> <span class="pre">2</span> <span class="pre">]];</span> <span class="pre">then</span> <span class="pre">echo</span> <span class="pre">'true';</span> <span class="pre">fi</span></code>
+Otherwise once you finish the first line, it’ll keep prompting for the full code block until you complete it with <code class="docutils literal notranslate"><span class="pre">fi</span></code>.</li>
+</ul>
+</div>
+
+  <div class="section">
+  
+    
+
+
+  
+  
+  </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../">docs</a></h1>
+
+
+
+
+
+
+
+
+
+  
+  
+  <h2>
+  
+    <i class="fa fa-pencil"></i>
+     Draft 
+  
+  </h2>
+
+  <ul>
+    
+
+  
+  <li id="author"><span><i class="fa-fw fa fa-user"></i>
+    
+      
+      <a href="../blog/author/ericrmc/">ericrmc</a>
+      
+    </li>
+  
+
+  
+
+  
+
+  
+
+  
+  <li id="tags"><span><i class="fa-fw fa fa-tag"></i>
+    
+      
+      <a href="../blog/tag/bash/">Bash</a>
+      
+    </li>
+  
+  
+  </ul>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/">About this site</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/">Showcase</a></li>
+</ul>
+
+
+  <h3><a href="../blog/">Recent Posts</a></h3>
+  <ul>
+    
+    
+      <li><a href="../20180423_geopandas/">23 April - GeoPandas for geospatial data in Python</a></li>
+    
+      <li><a href="../20180422_distributed-query/">22 April - Distributed query processing</a></li>
+    
+      <li><a href="../20180420_pythonic/">20 April - Pythonic programming</a></li>
+    
+      <li><a href="../20180419_sampling/">19 April - Sampling strategies</a></li>
+    
+      <li><a href="../20180419_hadoop/">19 April - Getting started with Hadoop and Hive</a></li>
+    
+  </ul>
+
+  <h3><a href="../blog/tag/">Tags</a></h3>
+  <style type="text/css">
+    ul.ablog-cloud {list-style: none; overflow: auto;}
+    ul.ablog-cloud li {float: left; height: 20pt; line-height: 18pt; margin-right: 5px;}
+    ul.ablog-cloud a {text-decoration: none; vertical-align: middle;}
+    li.ablog-cloud-1{font-size: 80%;}
+    li.ablog-cloud-2{font-size: 95%;}
+    li.ablog-cloud-3{font-size: 110%;}
+    li.ablog-cloud-4{font-size: 125%;}
+    li.ablog-cloud-5{font-size: 140%;}
+  </style>
+  <ul class="ablog-cloud">
+    
+      
+      <li class="ablog-cloud ablog-cloud-1">
+        <a href="../blog/tag/arcgis/">ArcGIS</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-2">
+        <a href="../blog/tag/bash/">Bash</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-1">
+        <a href="../blog/tag/hadoop/">Hadoop</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-1">
+        <a href="../blog/tag/hive/">Hive</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-5">
+        <a href="../blog/tag/python/">Python</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-1">
+        <a href="../blog/tag/r/">R</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-1">
+        <a href="../blog/tag/sql/">SQL</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-1">
+        <a href="../blog/tag/geospatial/">geospatial</a></li>
+      
+    
+      
+      <li class="ablog-cloud ablog-cloud-1">
+        <a href="../blog/tag/meta/">meta</a></li>
+      
+    
+  </ul>
+
+  <h3><a href="../blog/archive/">Archives</a></h3>
+  <ul>
+  
+    
+    <li><a href="../blog/2018/">2018 (10)</a></li>
+    
+  
+  </ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search/" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, ericrmc.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/20180424_bash.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

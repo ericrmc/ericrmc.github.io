@@ -2,7 +2,7 @@
 .. docs post example, created by `ericrmc` on Apr 15, 2018.
 
 .. post:: Apr 15, 2018
-   :tags: Shell, Python, meta
+   :tags: Bash, Python, meta
    :author: ericrmc
 
 Setting up Sphinx with ABlog

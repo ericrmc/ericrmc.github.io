@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -7,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Index &#8212; docs  documentation</title>
+    <title>GeoPandas for geospatial data in Python &#8212; docs  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -15,13 +14,29 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="author" title="About these documents" href="../about/" />
-    <link rel="index" title="Index" href="#" />
+    <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
+  
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  
+  <link rel="alternate" type="application/atom+xml"  href="../blog/atom.xml" title="ericrmc">
+  
+  
+  <link href="True" rel="stylesheet">
+  
+  <style type="text/css">
+    ul.ablog-archive {list-style: none; overflow: auto; margin-left: 0px}
+    ul.ablog-archive li {float: left; margin-right: 5px; font-size: 80%}
+    ul.postlist a {font-style: italic;}
+    ul.postlist-style-disc {list-style-type: disc;}
+    ul.postlist-style-none {list-style-type: none;}
+    ul.postlist-style-circle {list-style-type: circle;}
+  </style>
 
   </head><body>
   
@@ -31,13 +46,61 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
+  <div class="section" id="geopandas-for-geospatial-data-in-python">
+<h1>GeoPandas for geospatial data in Python<a class="headerlink" href="#geopandas-for-geospatial-data-in-python" title="Permalink to this headline">¶</a></h1>
+<p>GeoPandas is a project that started in 2013 and incorporates some of the most useful geospatial data processing
+packages available in Python. It’s very comprehensive but a bit on the slow side because it stores custom Python objects in arrays,
+so for operations it has to iterate through those objects. Some recent enhancements with Cython means it’s closing the gap to
+bigger open-source tools like PostGIS.</p>
+<p>Some major features:</p>
+<ul class="simple">
+<li>Read and write a variety of formats (fiona, GDAL/OGR)</li>
+<li>Familiar manipulation of the attributes (pandas dataframe)</li>
+<li>Element-wise spatial predicates (intersects, within, …) and operations (intersection, union, difference, …) (shapely)</li>
+<li>Re-project your data (pyproj)</li>
+<li>Quickly visualise the geometries (matplotlib, descartes)</li>
+<li>More advanced spatial operations: spatial joins and overlays (rtree)</li>
+</ul>
+<p>It can be expanded with the following packages:</p>
+<ul class="simple">
+<li>geoplot for visualisation and cartopy for projection-aware cartography</li>
+<li>folium for Leaflet.js maps, including easy OpenStreetMap API plugins</li>
+<li>OSMnx for street networks</li>
+<li>PySAL for geospatial analysis</li>
+<li>rasterio for working with raster data</li>
+</ul>
+<p>The official site is <a class="reference external" href="http://geopandas.org/index.html">http://geopandas.org/index.html</a>. The Cython branch is available through GitHub:</p>
+<ul class="simple">
+<li>clone <a class="reference external" href="https://github.com/geopandas/geopandas">https://github.com/geopandas/geopandas</a></li>
+<li>checkout ‘geopandas-cython’ branch</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">inplace</span></code></li>
+</ul>
+<p>An alternative is GeoAlchemy 2, which extends SQLAlchemy for working with spatial databases and focuses on PostGIS.</p>
 </div>
 
+  <div class="section">
+  
+    
+
+
+<div class="section">
+  <span style="float: left;">
+  
+  
+  <a href="../20180422_distributed-query/">
+    <i class="fa fa-arrow-circle-left"></i>
+    Distributed query processing
+  </a>
+  
+  </span>
+  <span>&nbsp;</span>
+  <span style="float: right;">
+  
+</div>
+
+  
+  
+  </div>
 
           </div>
         </div>
@@ -54,6 +117,49 @@
 
 
 
+  
+  
+  <h2>
+  
+  <i class="fa fa-calendar"></i>
+    23 April 2018
+  
+  </h2>
+
+  <ul>
+    
+
+  
+  <li id="author"><span><i class="fa-fw fa fa-user"></i>
+    
+      
+      <a href="../blog/author/ericrmc/">ericrmc</a>
+      
+    </li>
+  
+
+  
+
+  
+
+  
+
+  
+  <li id="tags"><span><i class="fa-fw fa fa-tags"></i>
+      
+    
+      
+      <a href="../blog/tag/python/">Python</a>
+      
+    
+      
+      <a href="../blog/tag/geospatial/">geospatial</a>
+      
+    </li>
+  
+  
+  </ul>
+
 
 <h3>Navigation</h3>
 <ul>
@@ -66,8 +172,6 @@
   <ul>
     
     
-      <li><a href="../20180423_geopandas/">23 April - GeoPandas for geospatial data in Python</a></li>
-    
       <li><a href="../20180422_distributed-query/">22 April - Distributed query processing</a></li>
     
       <li><a href="../20180420_pythonic/">20 April - Pythonic programming</a></li>
@@ -75,6 +179,8 @@
       <li><a href="../20180419_sampling/">19 April - Sampling strategies</a></li>
     
       <li><a href="../20180419_hadoop/">19 April - Getting started with Hadoop and Hive</a></li>
+    
+      <li><a href="../20180418_comparelists/">18 April - Comparing lists</a></li>
     
   </ul>
 
@@ -170,6 +276,9 @@
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
+      |
+      <a href="../_sources/20180423_geopandas.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
 
     
