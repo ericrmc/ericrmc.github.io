@@ -1,5 +1,5 @@
 
-.. post::
+.. post:: May 1, 2018
    :tags: Bash
    :author: ericrmc
 .. highlight:: bash
