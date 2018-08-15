@@ -4,17 +4,15 @@
 Showcase
 ============================
 
+.. image:: images/show-3d-creek-simulation-920px.jpg
 Perspective display of simulated flood surface.
  *Software: ESRI ArcGIS, pre-prepared TUFLOW results, Adobe Photoshop*
 
-.. image:: images/show-3d-creek-simulation-920px.jpg
-
 ------------
 
+.. image:: images/show-art-bom-920px.jpg
 Interpolation of Bureau of Meteorology radar intensity data where the rain gauges had missed a storm event because of their spatial distribution.
   *Software: ESRI ArcGIS, Python.*
-
-.. image:: images/show-art-bom-920px.jpg
 
 ------------
 
